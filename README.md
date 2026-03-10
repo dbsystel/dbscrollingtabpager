@@ -10,7 +10,7 @@ A SwiftUI component that provides a scrollable pager with sticky tabs, featuring
 - Multiple pages can be swiped horizontally between tabs
 - The tab bar remains accessible while scrolling through page content
 
-![Demo](https://github.com/dbsystel/dbscrollingtabpager/demo.gif)
+![Demo](https://raw.githubusercontent.com/dbsystel/dbscrollingtabpager/main/demo.gif)
 
 ## Requirements
 
