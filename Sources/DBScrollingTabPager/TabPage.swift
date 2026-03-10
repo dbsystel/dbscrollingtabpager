@@ -185,7 +185,8 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
         for index in viewModel.tabs.indices {
             let label = viewModel.tabs[index]
 
-            if label != from {
+            if label != from,
+               viewModel.scrollPositions[index].isPositionedByUser {
                 viewModel.scrollPositions[index].scrollTo(y: 0)
             }
         }
