@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DBScrollingTabPager",
     platforms:[
-        .iOS(.v18)
+        .iOS(.v15)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -16,7 +16,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/siteline/swiftui-introspect", from: "0.2.0"),
+        .package(url: "https://github.com/siteline/swiftui-introspect", from: "26.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.

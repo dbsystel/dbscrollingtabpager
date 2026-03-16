@@ -14,6 +14,7 @@
 
 import SwiftUI
 
+@available(iOS 18.0, *)
 public struct FadingEdgesHorizontalScrollView<Content: View>: View {
     @ViewBuilder let content: Content
     
@@ -72,18 +73,20 @@ fileprivate struct SideGradient: View {
 }
 
 #Preview {
-    VStack(spacing: 4) {
-        FadingEdgesHorizontalScrollView {
-            Text("Single Item")
-        }
-        Divider()
-        FadingEdgesHorizontalScrollView {
-            HStack(alignment: .center, spacing: 8) {
-                ForEach(1...10, id: \.self) { i in
-                    Text("Pos \(i)").font(.caption)
+    if #available(iOS 18.0, *) {
+        VStack(spacing: 4) {
+            FadingEdgesHorizontalScrollView {
+                Text("Single Item")
+            }
+            Divider()
+            FadingEdgesHorizontalScrollView {
+                HStack(alignment: .center, spacing: 8) {
+                    ForEach(1...10, id: \.self) { i in
+                        Text("Pos \(i)").font(.caption)
+                    }
                 }
             }
-        }
-        Spacer()
-    }.padding(16)
+            Spacer()
+        }.padding(16)
+    }
 }

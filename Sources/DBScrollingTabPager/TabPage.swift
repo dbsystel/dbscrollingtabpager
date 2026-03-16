@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+@available(iOS 18.0, *)
 internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
     let index: Int
     let tab: Tab
@@ -206,6 +207,7 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
     }
 }
 
+@available(iOS 18.0, *)
 private struct CustomPanGesture: UIGestureRecognizerRepresentable {
     var handler: (UIPanGestureRecognizer) -> Void
     func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator {

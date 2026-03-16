@@ -21,6 +21,7 @@ nonisolated fileprivate struct CoordinateSpaceBox: @unchecked Sendable {
 
 extension KeyPath: @unchecked @retroactive Sendable where Root: Sendable, Value: Sendable {}
 
+@available(iOS 18.0, *)
 internal extension View {
     func modify<Content: View>(@ViewBuilder _ content: (Self) -> Content) -> some View {
         content(self)

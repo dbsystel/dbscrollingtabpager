@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+@MainActor
 public protocol DBTab: Hashable {
     var label: String { get }
 }
@@ -24,6 +25,7 @@ public struct DBTabContext {
     public let isSelected: Bool
 }
 
+@available(iOS 18.0, *)
 internal class DBScrollingTabPagerViewModel<Tab: DBTab>: ObservableObject {
     let tabs: [Tab]
     

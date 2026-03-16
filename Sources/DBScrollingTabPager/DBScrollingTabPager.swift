@@ -18,6 +18,7 @@ import SwiftUI
 
 /// The DBScrollingTabPager provides a scrollable pager with sticky tabs, consisting of a header on top, a tab-bar (optionally with rounded corners) and content. When the content is scrolled, the tab-bar scrolls with it and obscures the
 /// header under it reaches the top of the page, at which point the tab-bar sticks to the top beneath an optional navigation bar.
+@available(iOS 18.0, *)
 public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View, Pages: View, Tab: DBTab>: View {
     @ViewBuilder private let header: () -> Header
     @ViewBuilder private let background: () -> Background

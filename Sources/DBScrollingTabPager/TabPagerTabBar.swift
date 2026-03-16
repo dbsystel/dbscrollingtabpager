@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+@available(iOS 18.0, *)
 internal struct TabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     internal init(selection: Binding<Tab?>,
                   @ViewBuilder tabLabelProvider: @escaping (DBTabContext) -> TabLabel) {
@@ -59,6 +60,7 @@ internal struct TabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     }
 }
 
+@available(iOS 18.0, *)
 internal struct ScrollingTabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     internal init(selection: Binding<Tab?>,
                   @ViewBuilder tabLabelProvider: @escaping (DBTabContext) -> TabLabel) {
@@ -86,6 +88,7 @@ internal struct ScrollingTabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     }
 }
 
+@available(iOS 18.0, *)
 internal struct StaticTabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     internal init(selection: Binding<Tab?>,
                   @ViewBuilder tabLabelProvider: @escaping (DBTabContext) -> TabLabel) {
