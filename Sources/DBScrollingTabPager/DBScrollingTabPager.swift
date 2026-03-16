@@ -137,7 +137,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                                     proxy.size.height
                                    + proxy.safeAreaInsets.top
                                    + proxy.safeAreaInsets.bottom
-                                   + 8 // Extra padding for SE
+                                   + 10 // Extra padding for SE
                             )
                     }
                     .sensoryFeedback(.selection, trigger: selection)
