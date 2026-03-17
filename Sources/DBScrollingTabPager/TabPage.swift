@@ -55,7 +55,7 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                 ZStack {
                     if selection == tab {
                         header()
-                            .padding(.bottom, tabSelectorStyle.topCornerRadius)
+                            .padding(.bottom, tabSelectorStyle.topCornerRadius != 0 ? 8 : 0)
                             .opacity(viewModel.headerOpacity)
                             .visualEffect { content, proxy in
                                 // Pin the header and prevent it from swiping
