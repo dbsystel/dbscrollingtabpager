@@ -50,7 +50,7 @@ internal struct TabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
                 )
         }
         .modify { view in
-            if #unavailable(iOS 26) {
+            if #unavailable(iOS 26), viewModel.isHeaderSticking {
                 // The divider is only shown on iOS <= 18
                 view.overlay(alignment: .top) {
                     Divider().overlay(tabSelectorStyle.dividerColor)
