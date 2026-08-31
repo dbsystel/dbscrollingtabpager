@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B2033FA2EC7420800D3A43F /* DBScrollingTabPager in Frameworks */ = {isa = PBXBuildFile; productRef = 0B2033F92EC7420800D3A43F /* DBScrollingTabPager */; };
+		8BE8FEEC3045B49200ACFE85 /* DBScrollingTabPager in Frameworks */ = {isa = PBXBuildFile; productRef = 0B2033F92EC7420800D3A43F /* DBScrollingTabPager */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2033FA2EC7420800D3A43F /* DBScrollingTabPager in Frameworks */,
+				8BE8FEEC3045B49200ACFE85 /* DBScrollingTabPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +110,7 @@
 			mainGroup = 0B2033D92EC740DF00D3A43F;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				0B8947062ECC4E1300ABAF1A /* XCLocalSwiftPackageReference "../../DBScrollingTabPager" */,
+				8B4844833045B16000C71CBD /* XCLocalSwiftPackageReference "../../dbscrollingtabpager" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0B2033E32EC740DF00D3A43F /* Products */;
@@ -281,7 +281,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeLeft;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -320,7 +320,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeLeft;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -368,9 +368,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		0B8947062ECC4E1300ABAF1A /* XCLocalSwiftPackageReference "../../DBScrollingTabPager" */ = {
+		8B4844833045B16000C71CBD /* XCLocalSwiftPackageReference "../../dbscrollingtabpager" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../DBScrollingTabPager;
+			relativePath = ../../dbscrollingtabpager;
 		};
 /* End XCLocalSwiftPackageReference section */
 

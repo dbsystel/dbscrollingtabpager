@@ -40,7 +40,7 @@ internal extension View {
         }, action: action)
     }
 
-    func trackSize<T: Equatable&Sendable>(_ value: KeyPath<CGSize, T> = \.self,
+    func trackSize<T: Equatable&Sendable>(_ value: KeyPath<CGSize, T>,
                                           _ perform: @escaping (T) -> Void) -> some View {
         onGeometryChange(for: T.self, of: { $0.size[keyPath: value] }, action: perform)
     }

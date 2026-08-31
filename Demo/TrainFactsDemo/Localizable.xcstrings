@@ -27,13 +27,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ICE 2"
+            "value" : "Intercity-Express 2"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Train 2"
+            "value" : "Express Train 2"
           }
         }
       }

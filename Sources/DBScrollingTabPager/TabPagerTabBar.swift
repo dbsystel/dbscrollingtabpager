@@ -150,7 +150,7 @@ internal struct StaticTabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
 
     func tabSelectorCalculation() -> (CGFloat, CGFloat) {
         let initialProgress: CGFloat =
-            viewModel.mainScrollGeometry.contentOffset.x
+        (viewModel.mainScrollGeometry.contentOffset.x + viewModel.mainScrollGeometry.contentInsets.leading)
             / viewModel.mainScrollGeometry.bounds.width
         let progress = max(
             0,

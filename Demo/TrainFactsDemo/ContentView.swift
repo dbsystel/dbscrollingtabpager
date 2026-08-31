@@ -49,12 +49,17 @@ struct ContentView: View {
                     // The background extending into the safe area
                     LinearGradient(colors: [Color("DB Red 400"), Color("DB Red 800")],
                                    startPoint: .leading,
-                                   endPoint: .trailing)
+                                   endPoint: .trailing).ignoresSafeArea()
                 } tabLabelProvider: { context in
                     // Provides the text view for an individual tab label
-                    Text(context.tab.label)
-                            .font(context.isSelected ? .headline : .body)
-                            .tint(.primary)
+                    ZStack {
+                        Text(context.tab.label)
+                            .font(.headline)
+                            .opacity(context.isSelected ? 1 : 0)
+                        Text(context.tab.label)
+                            .font(.body)
+                            .opacity(context.isSelected ? 0 : 1)
+                    }.tint(.primary)
                 } pages: {
                     // The pages in order of display from left to right, which should correspond to the items in the "tabs" array
                     PageOne()

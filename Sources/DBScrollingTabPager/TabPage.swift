@@ -92,13 +92,13 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                             minHeight: rootProxy.size.height - viewModel.tabBarSize.height,
                             alignment: .top
                         )
-                        .frame(width: rootProxy.size.width)
+                        .frame(maxWidth: .infinity)
                         .padding(.bottom, rootProxy.safeAreaInsets.bottom)
                         .background(tabSelectorStyle.contentBackgroundColor)
                         .background {
-                            // extra background to ensure it covers the over-scrolling area 
+                            // extra background to ensure it covers the over-scrolling area
                             tabSelectorStyle.contentBackgroundColor
-                                .offset(y: rootProxy.size.height - 32)
+                                .offset(y: rootProxy.size.height - viewModel.tabBarSize.height)
                         }
                         .accessibilityElement(children: .contain)
                         .accessibilityLabel("TAB: \(tab.label)")
@@ -162,7 +162,6 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                 viewModel.mainScrollDisabled = false
             }
         }
-        .frame(width: rootProxy.size.width)
         .scrollClipDisabled()
         .zIndex(selection == tab ? 1000 : 0)
     }

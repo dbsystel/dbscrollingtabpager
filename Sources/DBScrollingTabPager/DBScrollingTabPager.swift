@@ -95,6 +95,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                                                 header: header,
                                                 tabLabelProvider: tabLabelProvider,
                                                 selection: $selection)
+                                        .containerRelativeFrame(.horizontal)
                                         .id(tab)
                                         .accessibilityIdentifier(tab.label)
                                         .accessibilityHidden(selection != tab)
@@ -105,6 +106,8 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         }
                         .scrollTargetLayout()
                     }
+                    // paging is not working correctly with 0 padding and horizontal safe area
+                    .padding(.horizontal, 0.0001)
                     .ignoresSafeArea(.all, edges: .bottom)
                     .scrollTargetBehavior(.paging)
                     .scrollPosition(id: $selection)
