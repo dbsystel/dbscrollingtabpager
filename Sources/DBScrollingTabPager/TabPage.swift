@@ -155,12 +155,22 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
             let maxOffset = min(offsetY, viewModel.headerHeight)
             
             if newPhase == .idle && maxOffset <= viewModel.headerHeight {
-                updateOtherScrollViews(tab, to: maxOffset)
+                updateScrollViews(to: maxOffset, skip: self.tab)
             }
             
             if newPhase == .idle && viewModel.mainScrollDisabled {
                 viewModel.mainScrollDisabled = false
             }
+        }
+        .onScrollGeometryChange(for: CGSize.self, of: \.contentSize) {
+            guard $0 != $1 else { return }
+            guard selection == tab else { return }
+            // update the scroll positions when the content size changes,
+            // e.g. due to screen rotation or resizing
+            let offsetY = viewModel.scrollOffsetsY[index]
+            let maxOffset = min(offsetY, viewModel.headerHeight)
+            guard viewModel.headerHeight > 0, maxOffset <= viewModel.headerHeight else { return }
+            Task { updateScrollViews(to: maxOffset, skip: nil) }
         }
         .scrollClipDisabled()
         .zIndex(selection == tab ? 1000 : 0)
@@ -192,14 +202,11 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
         }
     }
 
-    func updateOtherScrollViews(_ from: Tab, to: CGFloat) {
-        for index in viewModel.tabs.indices {
-            let label = viewModel.tabs[index]
+    func updateScrollViews(to: CGFloat, skip: Tab?) {
+        for index in viewModel.tabs.indices where viewModel.tabs[index] != skip {
             let offset = viewModel.scrollOffsetsY[index]
-
             let wantsUpdate = offset < viewModel.headerHeight || to < viewModel.headerHeight
-
-            if wantsUpdate && label != from {
+            if wantsUpdate {
                 viewModel.scrollPositions[index].scrollTo(y: to)
             }
         }
