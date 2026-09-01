@@ -135,13 +135,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         // otherwise the entire view can transparently scroll through the safe area. Elsewhere,
                         // the opacity is shifted during scrolling.
                         Rectangle()
-                            .ignoresSafeArea(.all, edges: viewModel.isHeaderSticking ? .bottom : [])
-                            .frame(height: viewModel.isHeaderSticking ? nil :
-                                    proxy.size.height
-                                   + proxy.safeAreaInsets.top
-                                   + proxy.safeAreaInsets.bottom
-                                   + 10 // Extra padding for SE
-                            )
+                            .ignoresSafeArea(.all, edges: viewModel.isHeaderSticking ? .bottom : [.bottom, .top])
                     }
                     .sensoryFeedback(.selection, trigger: selection)
                     .onAppear {
