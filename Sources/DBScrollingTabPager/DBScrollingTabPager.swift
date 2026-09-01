@@ -127,6 +127,11 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         for: ScrollGeometry.self,
                         of: { $0 },
                         action: { _, newValue in
+                            if viewModel.mainScrollGeometry.contentSize != newValue.contentSize {
+                                // reset the scroll position when the content size changes,
+                                // e.g. due to rotation or resizing
+                                rootScrollViewReader.scrollTo(selection)
+                            }
                             viewModel.mainScrollGeometry = newValue
                         }
                     )
