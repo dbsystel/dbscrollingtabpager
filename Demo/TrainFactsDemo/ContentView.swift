@@ -43,13 +43,17 @@ struct ContentView: View {
                     // The header which will be scrolled over by the tab view
                     ZStack(alignment: .center) {
                         Color.clear.ignoresSafeArea()
-                        Image("icesmall").resizable().aspectRatio(contentMode: .fit).frame(height: 100)
+                        Image("icesmall")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 100)
                     }.padding()
                 } background: {
                     // The background extending into the safe area
                     LinearGradient(colors: [Color("DB Red 400"), Color("DB Red 800")],
                                    startPoint: .leading,
-                                   endPoint: .trailing).ignoresSafeArea()
+                                   endPoint: .trailing)
+                        .ignoresSafeArea()
                 } tabLabelProvider: { context in
                     // Provides the text view for an individual tab label
                     ZStack {

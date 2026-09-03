@@ -55,6 +55,8 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                 ZStack {
                     if selection == tab {
                         header()
+                            .padding(.leading, rootProxy.safeAreaInsets.leading)
+                            .padding(.trailing, rootProxy.safeAreaInsets.trailing)
                             .padding(.bottom, tabSelectorStyle.topCornerRadius != 0 ? 8 : 0)
                             .opacity(viewModel.headerOpacity)
                             .visualEffect { content, proxy in
