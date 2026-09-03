@@ -18,8 +18,10 @@ import SwiftUI
 @available(iOS 18.0, *)
 internal struct TabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     internal init(selection: Binding<Tab?>,
+                  rootProxy: GeometryProxy,
                   @ViewBuilder tabLabelProvider: @escaping (DBTabContext) -> TabLabel) {
         self._selection = selection
+        self.rootProxy = rootProxy
         self.tabLabelProvider = tabLabelProvider
     }
     
@@ -28,12 +30,15 @@ internal struct TabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
     @ViewBuilder let tabLabelProvider: (DBTabContext) -> TabLabel
     
     @Binding var selection: Tab?
+    let rootProxy: GeometryProxy
     
     var body: some View {
         ViewThatFits {
             StaticTabPagerTabBar(selection: $selection, tabLabelProvider: tabLabelProvider)
             ScrollingTabPagerTabBar(selection: $selection, tabLabelProvider: tabLabelProvider)
         }
+        .padding(.leading, rootProxy.safeAreaInsets.leading)
+        .padding(.trailing, rootProxy.safeAreaInsets.trailing)
         .background(alignment: .bottom) {
             Divider().overlay(tabSelectorStyle.dividerColor)
         }

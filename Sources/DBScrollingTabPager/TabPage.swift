@@ -94,6 +94,8 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                         )
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, rootProxy.safeAreaInsets.bottom)
+                        .padding(.leading, rootProxy.safeAreaInsets.leading)
+                        .padding(.trailing, rootProxy.safeAreaInsets.trailing)
                         .background(tabSelectorStyle.contentBackgroundColor)
                         .background {
                             // extra background to ensure it covers the over-scrolling area
@@ -108,7 +110,9 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                         // Only show the tab for the currently active page. Otherwise just show a blank placeholder (which the user
                         // will not see, as the tabbar remains over it).
                         if selection == tab {
-                            TabPagerTabBar(selection: $selection, tabLabelProvider: tabLabelProvider)
+                            TabPagerTabBar(selection: $selection,
+                                           rootProxy: rootProxy,
+                                           tabLabelProvider: tabLabelProvider)
                                 .visualEffect { content, proxy in
                                     // Note: This does the "magic" of keeping the tab bar stuck where it is
                                     content.offset(x: -proxy.frame(in: .scrollView(axis: .horizontal)).minX)

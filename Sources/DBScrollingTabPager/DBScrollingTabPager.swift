@@ -106,7 +106,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         }
                         .scrollTargetLayout()
                     }
-                    .ignoresSafeArea(.all, edges: .bottom)
+                    .ignoresSafeArea(.all, edges: [.horizontal, .bottom])
                     .scrollTargetBehavior(.viewAligned)
                     .scrollPosition(id: $selection)
                     .scrollIndicators(.hidden)
@@ -139,6 +139,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         // the opacity is shifted during scrolling.
                         Rectangle()
                             .ignoresSafeArea(.all, edges: viewModel.isHeaderSticking ? .bottom : [.bottom, .top])
+                            .ignoresSafeArea(.all, edges: .horizontal)
                     }
                     .sensoryFeedback(.selection, trigger: selection)
                     .onAppear {
