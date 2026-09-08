@@ -107,7 +107,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         .scrollTargetLayout()
                     }
                     .ignoresSafeArea(.all, edges: [.horizontal, .bottom])
-                    .scrollTargetBehavior(.viewAligned)
+                    .scrollTargetBehavior(.paging)
                     .scrollPosition(id: $selection)
                     .scrollIndicators(.hidden)
                     .scrollDisabled(viewModel.mainScrollDisabled)
