@@ -92,6 +92,11 @@ struct ContentView: View {
 struct PageOne: View {
     var body: some View {
         VStack {
+            Text("The Beginning of ICE")
+                .font(.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .background(.secondary.opacity(0.3), ignoresSafeAreaEdges: .horizontal)
             Text("""
                 ICE 1 trains consist of two powerheads and 9 to 14 intermediate cars. Because trainsets are not separated in regular service, they can be seen as multiple units from an operational point of view. During the first refurbishment, which was completed in late 2008, trainsets were standardized to 12 intermediate cars.
 
@@ -103,8 +108,8 @@ struct PageOne: View {
                 A train consisting of 14 cars had a length of 410.70 metres (1,347 ft 5 in). Prior to the refurbishment this train would have had 192 seats in first class, 567 seats in second class and 40 seats in the restaurant car plus four in the conference compartment. Two spaces for wheelchairs are available.[4]
 
                 Most cars of the ICE 1 offer both compartments and rows of seats, just like the seating in German InterCity cars.[4] Cars at the ends of the trainsets used to be smoking areas. There are "quiet" cars as well as cars that were later equipped with cell phone repeaters.[6] Some seats were designed to turn to face the direction of travel, but this was never used in revenue service.[4]
-                """)
-        }.padding()
+                """).padding()
+        }
     }
 }
 

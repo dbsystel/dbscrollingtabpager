@@ -95,9 +95,9 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                             alignment: .top
                         )
                         .frame(maxWidth: .infinity)
-                        .padding(.bottom, rootProxy.safeAreaInsets.bottom)
-                        .padding(.leading, rootProxy.safeAreaInsets.leading)
-                        .padding(.trailing, rootProxy.safeAreaInsets.trailing)
+                        .safeAreaPadding(.bottom, rootProxy.safeAreaInsets.bottom)
+                        .safeAreaPadding(.leading, rootProxy.safeAreaInsets.leading)
+                        .safeAreaPadding(.trailing, rootProxy.safeAreaInsets.trailing)
                         .background(tabSelectorStyle.contentBackgroundColor)
                         .background {
                             // extra background to ensure it covers the over-scrolling area
