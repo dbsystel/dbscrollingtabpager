@@ -23,11 +23,12 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
     let subview: Subview
     
     @Binding var selection: Tab?
+    @State private var containerHeight: CGFloat = 0
     
     @Environment(\.dbScrollingTabPagerStyle) private var tabSelectorStyle
     @Environment(\.accessibilityVoiceOverEnabled) var isVoiceOverRunning
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    @EnvironmentObject var viewModel: DBScrollingTabPagerViewModel<Tab>
+    @Environment(DBScrollingTabPagerViewModel<Tab>.self) private var viewModel
 
     @ViewBuilder private let header: () -> Header
     @ViewBuilder private let tabLabelProvider: (DBTabContext) -> TabLabel
@@ -49,6 +50,8 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
     }
 
     public var body: some View {
+        @Bindable var viewModel = viewModel
+
         ScrollView(.vertical) {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                 // MARK: Shared Header
@@ -91,7 +94,8 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
                     subview
                         // If the content frame is too small, it causes severe problems with the header
                         .frame(
-                            minHeight: rootProxy.size.height - viewModel.tabBarSize.height,
+                            minHeight: max(0, (containerHeight > 0 ? containerHeight : rootProxy.size.height)
+                                           - viewModel.tabBarSize.height - rootProxy.safeAreaInsets.bottom),
                             alignment: .top
                         )
                         .frame(maxWidth: .infinity)
@@ -135,53 +139,37 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
             }
         }
         .coordinateSpace(name: "scrollView")
+        .onScrollGeometryChange(for: CGFloat.self, of: \.containerSize.height) { _, height in
+            // The scroll view extends below the root's safe area. Short pages
+            // must fill its actual viewport so the entire header can scroll away.
+            containerHeight = height
+        }
         .onScrollGeometryChange(
             for: CGFloat.self,
             of: { $0.contentOffset.y + $0.contentInsets.top },
             action: { _, newValue in
-                viewModel.scrollOffsetsY[index] = newValue
-                if newValue < 0 {
-                    resetScrollViews(tab)
-                }
-                
-                if viewModel.headerHeight > 0 {
-                    // Wait until the headerHeight is known before assuming we're sticking
-                    viewModel.isHeaderSticking = newValue >= viewModel.headerHeight
-                    let halfHeight = viewModel.headerHeight / 2
-                    viewModel.headerOpacity = max(
-                        0.0,
-                        min(1.0 - ((newValue - halfHeight) / halfHeight), 1.0)
-                    )
-                }
+                viewModel.updateScrollOffset(newValue, at: index, selection: selection)
             }
         )
         .scrollPosition($viewModel.scrollPositions[index])
         .onScrollPhaseChange { _, newPhase in
-            let offsetY = viewModel.scrollOffsetsY[index]
-            let maxOffset = min(offsetY, viewModel.headerHeight)
-            
-            if newPhase == .idle && maxOffset <= viewModel.headerHeight {
-                updateScrollViews(to: maxOffset, skip: self.tab)
-            }
-            
-            if newPhase == .idle && viewModel.mainScrollDisabled {
+            guard selection == tab, newPhase == .idle else { return }
+            viewModel.synchronizeScrollPositions(with: selection)
+
+            if viewModel.mainScrollDisabled {
                 viewModel.mainScrollDisabled = false
             }
         }
-        .onScrollGeometryChange(for: CGSize.self, of: \.contentSize) {
-            guard $0 != $1 else { return }
+        .onGeometryChange(for: CGFloat.self, of: { $0.size.width }) { _ in
             guard selection == tab else { return }
-            // update the scroll positions when the content size changes,
-            // e.g. due to screen rotation or resizing
-            let offsetY = viewModel.scrollOffsetsY[index]
-            let maxOffset = min(offsetY, viewModel.headerHeight)
-            guard viewModel.headerHeight > 0, maxOffset <= viewModel.headerHeight else { return }
-            Task { updateScrollViews(to: maxOffset, skip: nil) }
+            // Real width changes need alignment; height/content-size changes
+            // during toolbar minimization must not start another scroll request.
+            viewModel.synchronizeScrollPositions(with: selection)
         }
         .scrollClipDisabled()
         .zIndex(selection == tab ? 1000 : 0)
     }
-    
+
     // We need to disable horizontal swiping on the header while still allowing
     // vertical scrolling. That requires a custom gesture.
     var horizontalScrollDisableGesture: some UIGestureRecognizerRepresentable {
@@ -193,27 +181,6 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
             case .ended, .cancelled, .failed:
                 viewModel.mainScrollDisabled = false
             default: ()
-            }
-        }
-    }
-
-    func resetScrollViews(_ from: Tab) {
-        for index in viewModel.tabs.indices {
-            let label = viewModel.tabs[index]
-
-            if label != from,
-               viewModel.scrollPositions[index].isPositionedByUser {
-                viewModel.scrollPositions[index].scrollTo(y: 0)
-            }
-        }
-    }
-
-    func updateScrollViews(to: CGFloat, skip: Tab?) {
-        for index in viewModel.tabs.indices where viewModel.tabs[index] != skip {
-            let offset = viewModel.scrollOffsetsY[index]
-            let wantsUpdate = offset < viewModel.headerHeight || to < viewModel.headerHeight
-            if wantsUpdate {
-                viewModel.scrollPositions[index].scrollTo(y: to)
             }
         }
     }

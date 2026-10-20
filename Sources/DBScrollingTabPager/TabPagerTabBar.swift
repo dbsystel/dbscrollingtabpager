@@ -25,7 +25,7 @@ internal struct TabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
         self.tabLabelProvider = tabLabelProvider
     }
     
-    @EnvironmentObject var viewModel: DBScrollingTabPagerViewModel<Tab>
+    @Environment(DBScrollingTabPagerViewModel<Tab>.self) private var viewModel
     @Environment(\.dbScrollingTabPagerStyle) private var tabSelectorStyle
     @ViewBuilder let tabLabelProvider: (DBTabContext) -> TabLabel
     
@@ -73,7 +73,7 @@ internal struct ScrollingTabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
         self.tabLabelProvider = tabLabelProvider
     }
     
-    @EnvironmentObject var viewModel: DBScrollingTabPagerViewModel<Tab>
+    @Environment(DBScrollingTabPagerViewModel<Tab>.self) private var viewModel
     @Binding var selection: Tab?
     @ViewBuilder let tabLabelProvider: (DBTabContext) -> TabLabel
     
@@ -101,7 +101,7 @@ internal struct StaticTabPagerTabBar<TabLabel: View, Tab: DBTab>: View {
         self.tabLabelProvider = tabLabelProvider
     }
     
-    @EnvironmentObject var viewModel: DBScrollingTabPagerViewModel<Tab>
+    @Environment(DBScrollingTabPagerViewModel<Tab>.self) private var viewModel
     @Binding var selection: Tab?
     @ViewBuilder let tabLabelProvider: (DBTabContext) -> TabLabel
     
