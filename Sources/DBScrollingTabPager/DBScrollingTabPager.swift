@@ -160,5 +160,10 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
             }
         }
         .coordinateSpace(name: "container")
+        .modify { view in
+            if #available(iOS 27.1, *) {
+                view.toolbarMinimizationBehavior(.never, for: .navigationBar)
+            } else { view }
+        }
     }
 }
