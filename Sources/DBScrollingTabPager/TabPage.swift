@@ -24,6 +24,11 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
     
     @Binding var selection: Tab?
     @State private var containerHeight: CGFloat = 0
+
+    private struct ScrollLayout: Equatable {
+        let containerSize: CGSize
+        let contentSize: CGSize
+    }
     
     @Environment(\.dbScrollingTabPagerStyle) private var tabSelectorStyle
     @Environment(\.accessibilityVoiceOverEnabled) var isVoiceOverRunning
@@ -139,10 +144,18 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
             }
         }
         .coordinateSpace(name: "scrollView")
-        .onScrollGeometryChange(for: CGFloat.self, of: \.containerSize.height) { _, height in
-            // The scroll view extends below the root's safe area. Short pages
-            // must fill its actual viewport so the entire header can scroll away.
-            containerHeight = height
+        .onScrollGeometryChange(for: ScrollLayout.self, of: {
+            ScrollLayout(containerSize: $0.containerSize, contentSize: $0.contentSize)
+        }) { _, layout in
+            // Short pages must fill the scroll view's actual viewport.
+            containerHeight = layout.containerSize.height
+            guard selection == tab else { return }
+
+            // Wait for the new viewport and content dimensions to take effect.
+            Task {
+                guard selection == tab else { return }
+                viewModel.realignScrollPositions(with: selection)
+            }
         }
         .onScrollGeometryChange(
             for: CGFloat.self,
@@ -159,12 +172,6 @@ internal struct TabPage<Header: View, TabLabel: View, Tab: DBTab>: View {
             if viewModel.mainScrollDisabled {
                 viewModel.mainScrollDisabled = false
             }
-        }
-        .onGeometryChange(for: CGFloat.self, of: { $0.size.width }) { _ in
-            guard selection == tab else { return }
-            // Real width changes need alignment; height/content-size changes
-            // during toolbar minimization must not start another scroll request.
-            viewModel.synchronizeScrollPositions(with: selection)
         }
         .scrollClipDisabled()
         .zIndex(selection == tab ? 1000 : 0)

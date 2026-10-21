@@ -132,8 +132,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                         of: { $0 },
                         action: { _, newValue in
                             if viewModel.updateMainScrollGeometry(newValue) {
-                                // Realign pages after rotation or resizing, not when
-                                // navigation-bar minimization only changes the height.
+                                // Keep the selected horizontal page aligned after resizing.
                                 rootScrollViewReader.scrollTo(selection)
                             }
                         }

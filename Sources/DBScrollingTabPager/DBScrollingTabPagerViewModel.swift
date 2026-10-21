@@ -65,7 +65,6 @@ internal final class DBScrollingTabPagerViewModel<Tab: DBTab> {
     }
 
     /// Only a width change requires realigning the horizontally paged content.
-    /// A minimizing navigation bar continuously changes its height while scrolling.
     func updateMainScrollGeometry(_ geometry: ScrollGeometry) -> Bool {
         let widthChanged = mainScrollGeometry.containerSize.width != geometry.containerSize.width
             || mainScrollGeometry.contentSize.width != geometry.contentSize.width
@@ -111,8 +110,7 @@ internal final class DBScrollingTabPagerViewModel<Tab: DBTab> {
         guard let selectedIndex = tabs.firstIndex(where: { $0 == selection }), headerHeight > 0 else { return }
         let target = max(0, min(scrollOffsetsY[selectedIndex], headerHeight))
 
-        // Never scroll the active page in response to a layout change. Doing so
-        // interrupts the gesture and feeds back into navigation-bar minimization.
+        // Finishing a gesture only needs to align the other pages' headers.
         for index in tabs.indices where index != selectedIndex {
             if scrollOffsetsY[index] < headerHeight || target < headerHeight {
                 scroll(to: target, at: index)
@@ -120,8 +118,18 @@ internal final class DBScrollingTabPagerViewModel<Tab: DBTab> {
         }
     }
 
-    private func scroll(to offset: CGFloat, at index: Int) {
-        guard scrollOffsetsY[index] != offset else { return }
+    func realignScrollPositions(with selection: Tab?) {
+        guard let selectedIndex = tabs.firstIndex(where: { $0 == selection }), headerHeight > 0 else { return }
+
+        // Layout changes invalidate previous requests. Reapply the active page's
+        // offset without losing its position further down in the content.
+        requestedScrollOffsetsY = .init(repeating: nil, count: tabs.count)
+        scroll(to: max(0, scrollOffsetsY[selectedIndex]), at: selectedIndex, force: true)
+        synchronizeScrollPositions(with: selection)
+    }
+
+    private func scroll(to offset: CGFloat, at index: Int, force: Bool = false) {
+        guard force || scrollOffsetsY[index] != offset else { return }
         // ScrollPosition doesn't expose a y-only target on iOS 18, and issuing
         // scrollTo again creates another request even for the same coordinate.
         guard requestedScrollOffsetsY[index] != offset else { return }
