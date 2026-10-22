@@ -27,7 +27,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
     
     @Environment(\.dbScrollingTabPagerStyle) private var tabPagerStyle
     
-    @StateObject private var viewModel: DBScrollingTabPagerViewModel<Tab>
+    @State private var viewModel: DBScrollingTabPagerViewModel<Tab>
     @Binding private var selection: Tab?
     private var headerOpacity: Binding<CGFloat>?
     /// Creates a scrolling tab pager with customizable tabs, header, and pages.
@@ -59,8 +59,8 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
         self.background = background
         self._selection = selection
         self.headerOpacity = headerOpacity
-        self._viewModel = StateObject(
-            wrappedValue: DBScrollingTabPagerViewModel(tabs: tabs)
+        self._viewModel = State(
+            initialValue: DBScrollingTabPagerViewModel(tabs: tabs)
         )
     }
 
@@ -99,7 +99,7 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                                         .id(tab)
                                         .accessibilityIdentifier(tab.label)
                                         .accessibilityHidden(selection != tab)
-                                        .environmentObject(viewModel)
+                                        .environment(viewModel)
                                     }
                                 }
                             }
@@ -121,16 +121,20 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
                     }.onChange(of: viewModel.headerOpacity) { _, newValue in
                         self.headerOpacity?.wrappedValue = newValue
                     }
+                    .onChange(of: selection) { _, newValue in
+                        viewModel.updateHeader(for: newValue)
+                    }
+                    .onChange(of: viewModel.headerHeight) { _, _ in
+                        viewModel.updateHeader(for: selection)
+                    }
                     .onScrollGeometryChange(
                         for: ScrollGeometry.self,
                         of: { $0 },
                         action: { _, newValue in
-                            if viewModel.mainScrollGeometry.contentSize != newValue.contentSize {
-                                // reset the scroll position when the content size changes,
-                                // e.g. due to screen rotation or resizing
+                            if viewModel.updateMainScrollGeometry(newValue) {
+                                // Keep the selected horizontal page aligned after resizing.
                                 rootScrollViewReader.scrollTo(selection)
                             }
-                            viewModel.mainScrollGeometry = newValue
                         }
                     )
                     .mask {
@@ -155,5 +159,10 @@ public struct DBScrollingTabPager<TabLabel: View, Header: View, Background: View
             }
         }
         .coordinateSpace(name: "container")
+        .modify { view in
+            if #available(iOS 27.1, *) {
+                view.toolbarMinimizationBehavior(.never, for: .navigationBar)
+            } else { view }
+        }
     }
 }

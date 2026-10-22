@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0B2033E12EC740DF00D3A43F"
                BuildableName = "TrainFactsDemo.app"
+               BlueprintName = "TrainFactsDemo"
                ReferencedContainer = "container:TrainFactsDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,6 +47,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0B2033E12EC740DF00D3A43F"
             BuildableName = "TrainFactsDemo.app"
+            BlueprintName = "TrainFactsDemo"
             ReferencedContainer = "container:TrainFactsDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,6 +64,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0B2033E12EC740DF00D3A43F"
             BuildableName = "TrainFactsDemo.app"
+            BlueprintName = "TrainFactsDemo"
             ReferencedContainer = "container:TrainFactsDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
